@@ -14,4 +14,6 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-vagrant destroy -f && vagrant up --provider=virtualbox
+vagrant plugin install vagrant-vbguest &&
+vagrant destroy -f &&
+vagrant up --provider=virtualbox

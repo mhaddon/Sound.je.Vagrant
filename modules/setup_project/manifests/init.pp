@@ -65,6 +65,11 @@ class setup_project {
     returns => [0, 1, 2, 14]
   } ->
 
+  file { "/var/www/sound.dev/source/src/main/java/com/nestedbird/models/core/DatabaseJunkLoader.java":
+    source => "puppet:///modules/setup_project/DatabaseJunkLoader.java",
+    mode   => 0644
+  } ->
+
   file { "/var/www/sound.dev/source/src/main/resources/properties/database/database-dev.override.properties":
     source => "puppet:///modules/setup_project/properties/database-dev.override.properties",
     mode   => 0644
@@ -72,6 +77,11 @@ class setup_project {
 
   file { "/var/www/sound.dev/source/src/main/resources/properties/email/email.override.properties":
     source => "puppet:///modules/setup_project/properties/email.override.properties",
+    mode   => 0644
+  } ->
+
+  file { "/var/www/sound.dev/source/src/main/resources/properties/application/application.override.properties":
+    source => "puppet:///modules/setup_project/properties/application.override.properties",
     mode   => 0644
   } ->
 
@@ -111,5 +121,11 @@ class setup_project {
   exec { "deploy_newly_build_server":
     command =>
       "/usr/bin/mv /var/www/sound.dev/source/target/NestedBird-1.0.war /var/www/sound.dev/NestedBird.war -f"
+  } ->
+
+  exec { "enable_server":
+    command =>
+      "/usr/bin/sudo sh -c '/usr/bin/echo \"@reboot /var/www/sound.dev/nb_start\" > /etc/cron.d/sound'",
+    returns => [0, 1, 2, 14]
   }
 }

@@ -34,7 +34,7 @@ Vagrant.configure("2") do |config|
   end
 
   # Configure ports
-  config.vm.network "forwarded_port", guest: 8081, host: 18080
+  config.vm.network "forwarded_port", guest: 80, host: 18080
   config.vm.network "forwarded_port", guest: 3306, host: 13306
 
   # Provisioners

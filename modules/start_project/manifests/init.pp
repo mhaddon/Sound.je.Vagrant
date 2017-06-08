@@ -13,6 +13,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 class start_project {
+  service { "firewalld":
+    ensure => stopped,
+    enable => false
+  } ->
   exec { "start_project_server":
     command => "/var/www/sound.dev/nb_start",
     unless  => "/var/www/sound.dev/nb_get_pid"
