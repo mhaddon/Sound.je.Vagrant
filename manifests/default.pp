@@ -56,4 +56,6 @@ class { "nginx": } ->
 
 class { "redis": } ->
 
+class { "build_project": } ->
+
 class { "start_project": }

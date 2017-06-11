@@ -21,22 +21,28 @@ class setup_project {
 
   file { "/var/www/sound.dev/nb_get_pid":
     source => "puppet:///modules/setup_project/nb_get_pid",
-    mode   => 0744
+    mode   => 0744,
+    owner  => "vagrant",
+    group  => "vagrant"
   } ->
 
   file { "/var/www/sound.dev/nb_start":
     source => "puppet:///modules/setup_project/nb_start",
-    mode   => 0744
+    mode   => 0744,
+    owner  => "vagrant",
+    group  => "vagrant"
   } ->
 
   file { "/var/www/sound.dev/nb_stop":
     source => "puppet:///modules/setup_project/nb_stop",
-    mode   => 0744
+    mode   => 0744,
+    owner  => "vagrant",
+    group  => "vagrant"
   } ->
 
   exec { "clone_project_git_repo":
     command => "/usr/bin/git clone https://github.com/mhaddon/Sound.je.git /var/www/sound.dev/source",
-    unless  => "/usr/bin/ls /var/www/sound.dev/source"
+    unless  => "/usr/bin/ls /var/www/sound.dev/source/src"
   } ->
 
   exec { "check_for_project_git_update":
@@ -82,12 +88,16 @@ class setup_project {
 
   file { "/var/www/sound.dev/source/src/main/resources/properties/application/application.override.properties":
     source => "puppet:///modules/setup_project/properties/application.override.properties",
-    mode   => 0644
+    mode   => 0644,
+    owner  => "vagrant",
+    group  => "vagrant"
   } ->
 
   file { "/var/www/sound.dev/source/src/main/resources/properties/redis/redis-dev.override.properties":
     source => "puppet:///modules/setup_project/properties/redis-dev.override.properties",
-    mode   => 0644
+    mode   => 0644,
+    owner  => "vagrant",
+    group  => "vagrant"
   } ->
 
   package { "java-1.8.0-openjdk":
@@ -110,17 +120,6 @@ class setup_project {
   exec { "remove_sexy_sexy_unit_tests":
     command =>
       "/usr/bin/rm -rf /var/www/sound.dev/source/src/test/java"
-  } ->
-
-  exec { "create_server":
-    command =>
-      "/usr/bin/mvn -f /var/www/sound.dev/source/pom.xml -q clean compile package",
-    returns => [0, 1, 2, 14]
-  } ->
-
-  exec { "deploy_newly_build_server":
-    command =>
-      "/usr/bin/mv /var/www/sound.dev/source/target/NestedBird-1.0.war /var/www/sound.dev/NestedBird.war -f"
   } ->
 
   exec { "enable_server":

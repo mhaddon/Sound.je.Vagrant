@@ -24,6 +24,9 @@ Vagrant.configure("2") do |config|
   config.vm.box = "puppetlabs/centos-7.2-64-puppet-enterprise"
   config.vm.box_version = "1.0.1"
 
+  # Sync the project information
+  config.vm.synced_folder "project", "/var/www/sound.dev/source", owner: "vagrant", group: "vagrant"
+
   # Configure virtual box
   config.vm.provider "virtualbox" do |vb|
     # Display the VirtualBox GUI when booting the machine
@@ -38,16 +41,22 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 3306, host: 13306
 
   # Provisioners
-  config.vm.provision "shell", inline: <<-SHELL
+  config.vm.provision "shell", run: "always", inline: <<-SHELL
     echo '\n\tNestedBird  Copyright (C) 2016-2017  Michael Haddon\n\tThis program comes with ABSOLUTELY NO WARRANTY.\n\tThis is free software, and you are welcome to redistribute it\n\tunder certain conditions.\n\tView LICENSE for more information.\n\t'
   SHELL
 
-  config.vm.provision "puppet" do |puppet|
-    puppet.module_path = "modules"
-    puppet.options = "--verbose --debug"
+  config.vm.provision "create", type: "puppet" do |create|
+    create.module_path = "modules"
+    create.options = "--verbose --debug"
   end
 
-  config.vm.provision "shell", inline: <<-SHELL
+  config.vm.provision "build", run: "never", type: "puppet" do |build|
+    build.module_path = "modules"
+    build.manifest_file = "build.pp"
+    build.options = "--verbose --debug"
+  end
+
+  config.vm.provision "shell", run: "always", inline: <<-SHELL
     echo '\n\tFinished\n\tNavigate to http://www.sound.dev:18080/\n\tIt may take a while to finish loading\n\t'
   SHELL
 end

@@ -12,17 +12,6 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-class start_project {
-  service { "firewalld":
-    ensure => stopped,
-    enable => false
-  } ->
-  exec { "force_project_permissions":
-    command =>
-      "/usr/bin/chown -R vagrant:vagrant /var/www/sound.dev/*"
-  }
-  exec { "start_project_server":
-    command => "/var/www/sound.dev/nb_start"
-    # unless  => "/var/www/sound.dev/nb_get_pid"
-  }
-}
+class { "build_project": } ->
+
+class { "start_project": }

@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # NestedBird  Copyright (C) 2016-2017  Michael Haddon
 #
 # This program is free software: you can redistribute it and/or modify
@@ -12,17 +14,5 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-class start_project {
-  service { "firewalld":
-    ensure => stopped,
-    enable => false
-  } ->
-  exec { "force_project_permissions":
-    command =>
-      "/usr/bin/chown -R vagrant:vagrant /var/www/sound.dev/*"
-  }
-  exec { "start_project_server":
-    command => "/var/www/sound.dev/nb_start"
-    # unless  => "/var/www/sound.dev/nb_get_pid"
-  }
-}
+vagrant provision --provision-with build &&
+vagrant provision --provision-with shell

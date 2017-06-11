@@ -12,17 +12,21 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-class start_project {
-  service { "firewalld":
-    ensure => stopped,
-    enable => false
-  } ->
-  exec { "force_project_permissions":
+class build_project {
+  exec { "stop_server":
     command =>
-      "/usr/bin/chown -R vagrant:vagrant /var/www/sound.dev/*"
-  }
-  exec { "start_project_server":
-    command => "/var/www/sound.dev/nb_start"
-    # unless  => "/var/www/sound.dev/nb_get_pid"
+      "/var/www/sound.dev/nb_stop",
+    returns => [0, 1, 2, 14]
+  } ->
+
+  exec { "create_server":
+    command =>
+      "/usr/bin/mvn -f /var/www/sound.dev/source/pom.xml -q clean compile package",
+    returns => [0, 1, 2, 14]
+  } ->
+
+  exec { "deploy_newly_build_server":
+    command =>
+      "/usr/bin/mv /var/www/sound.dev/source/target/NestedBird-1.0.war /var/www/sound.dev/NestedBird.war -f"
   }
 }
