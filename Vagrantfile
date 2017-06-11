@@ -45,6 +45,11 @@ Vagrant.configure("2") do |config|
     echo '\n\tNestedBird  Copyright (C) 2016-2017  Michael Haddon\n\tThis program comes with ABSOLUTELY NO WARRANTY.\n\tThis is free software, and you are welcome to redistribute it\n\tunder certain conditions.\n\tView LICENSE for more information.\n\t'
   SHELL
 
+  config.vm.provision "warning", type: "shell", inline: <<-SHELL
+    echo '\n\tWARNING: FAST INTERNET IS (semi) REQUIRED.\n\tThis provision will download A LOT of stuff. Such as:\n\tOperating System Updates, loads of required packages, maven plugins, npm modules... etc etc etc\n\tIF THIS ERRORS OUT, its probably because it timed out because your internet is too slow, to fix this rerun the provision.\n\tvagrant provision --provision-with create\n\t'
+    sleep 10
+  SHELL
+
   config.vm.provision "create", type: "puppet" do |create|
     create.module_path = "modules"
     create.options = "--verbose --debug"
