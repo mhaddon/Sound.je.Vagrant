@@ -18,4 +18,5 @@ PID=$(/var/www/sound.dev/nb_get_pid)
 if [ "$PID" -eq "$PID" ] 2>/dev/null; then
     echo Stopping server with ID: $PID
     kill $PID
+    wait $PID
 fi

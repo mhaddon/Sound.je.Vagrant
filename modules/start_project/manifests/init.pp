@@ -13,14 +13,18 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 class start_project {
-  service { "firewalld":
-    ensure => stopped,
-    enable => false
+  exec { "deploy_newly_build_server":
+    command =>
+      "/usr/bin/cp /var/www/sound.dev/source/target/NestedBird-1.0.war /var/www/sound.dev/NestedBird.war"
   } ->
   exec { "force_project_permissions":
     command =>
       "/usr/bin/chown -R vagrant:vagrant /var/www/sound.dev/*"
-  }
+  } ->
+  exec { "wait_a_wee_while":
+    command =>
+      "/usr/bin/sleep 15"
+  } ->
   exec { "start_project_server":
     command => "/var/www/sound.dev/nb_start"
     # unless  => "/var/www/sound.dev/nb_get_pid"

@@ -45,6 +45,12 @@ package { "nodejs":
   ensure        => present
 } ->
 
+# DISABLE FIREWALL
+service { "firewalld":
+  ensure => stopped,
+  enable => false
+} ->
+
 # Create Project Setup
 class { "setup_project": } ->
 

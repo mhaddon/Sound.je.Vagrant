@@ -14,5 +14,11 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+printf "\r\n> Building Maven Project\r\n" &&
+mvn -f project/pom.xml -q clean compile package -Dgroups="com.nestedbird.testcategory.Fast,com.nestedbird.testcategory.Slow" &&
+printf "\r\n> Build Gulp Projects\r\n" &&
+npm --prefix ./project run gulp &&
+printf "\r\n> Restarting Server\r\n" &&
 vagrant provision --provision-with build &&
-vagrant provision --provision-with shell
+vagrant provision --provision-with shell &&
+printf "\r\n> All done :)\r\n"

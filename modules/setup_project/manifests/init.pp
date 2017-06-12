@@ -40,36 +40,36 @@ class setup_project {
     group  => "vagrant"
   } ->
 
-  exec { "clone_project_git_repo":
-    command => "/usr/bin/git clone https://github.com/mhaddon/Sound.je.git /var/www/sound.dev/source",
-    unless  => "/usr/bin/ls /var/www/sound.dev/source/src"
-  } ->
+  # exec { "clone_project_git_repo":
+  #   command => "/usr/bin/git clone https://github.com/mhaddon/Sound.je.git /var/www/sound.dev/source",
+  #   unless  => "/usr/bin/ls /var/www/sound.dev/source/src"
+  # } ->
 
-  exec { "check_for_project_git_update":
-    command =>
-      "/usr/bin/git --work-tree=/var/www/sound.dev/source --git-dir=/var/www/sound.dev/source/.git pull origin master"
-  } ->
+  # exec { "check_for_project_git_update":
+  #   command =>
+  #     "/usr/bin/git --work-tree=/var/www/sound.dev/source --git-dir=/var/www/sound.dev/source/.git pull origin master"
+  # } ->
 
-  exec { "npm_install":
-    command =>
-      "/usr/bin/npm --prefix /var/www/sound.dev/source install /var/www/sound.dev/source",
-    unless => "/usr/bin/ls /var/www/sound.dev/source/node_modules",
-    returns => [0, 1, 2, 14]
-  } ->
+  # exec { "npm_install":
+  #   command =>
+  #     "/usr/bin/npm --prefix /var/www/sound.dev/source install /var/www/sound.dev/source",
+  #   unless => "/usr/bin/ls /var/www/sound.dev/source/node_modules",
+  #   returns => [0, 1, 2, 14]
+  # } ->
 
-  exec { "npm_install_gulp":
-    command =>
-      "/usr/bin/npm install gulp -g",
-    returns => [0, 1, 2, 14]
-  } ->
+  # exec { "npm_install_gulp":
+  #   command =>
+  #     "/usr/bin/npm install gulp -g",
+  #   returns => [0, 1, 2, 14]
+  # } ->
 
-  exec { "gulp_create_files":
-    command =>
-      "/usr/bin/cd /var/www/sound.dev/source && /usr/bin/gulp sass && /usr/bin/gulp scripts",
-    unless =>
-      "/usr/bin/ls /var/www/sound.dev/source/src/main/resources/static/main.js",
-    returns => [0, 1, 2, 14]
-  } ->
+  # exec { "gulp_create_files":
+  #   command =>
+  #     "/usr/bin/cd /var/www/sound.dev/source && /usr/bin/gulp sass && /usr/bin/gulp scripts",
+  #   unless =>
+  #     "/usr/bin/ls /var/www/sound.dev/source/src/main/resources/static/main.js",
+  #   returns => [0, 1, 2, 14]
+  # } ->
 
   file { "/var/www/sound.dev/source/src/main/java/com/nestedbird/models/core/DatabaseJunkLoader.java":
     source => "puppet:///modules/setup_project/DatabaseJunkLoader.java",
@@ -117,10 +117,10 @@ class setup_project {
     ensure        => installed
   } ->
 
-  exec { "remove_sexy_sexy_unit_tests":
-    command =>
-      "/usr/bin/rm -rf /var/www/sound.dev/source/src/test/java"
-  } ->
+  # exec { "remove_sexy_sexy_unit_tests":
+  #   command =>
+  #     "/usr/bin/rm -rf /var/www/sound.dev/source/src/test/java"
+  # } ->
 
   exec { "enable_server":
     command =>

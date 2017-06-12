@@ -17,16 +17,11 @@ class build_project {
     command =>
       "/var/www/sound.dev/nb_stop",
     returns => [0, 1, 2, 14]
-  } ->
-
-  exec { "create_server":
-    command =>
-      "/usr/bin/mvn -f /var/www/sound.dev/source/pom.xml -q clean compile package",
-    returns => [0, 1, 2, 14]
-  } ->
-
-  exec { "deploy_newly_build_server":
-    command =>
-      "/usr/bin/mv /var/www/sound.dev/source/target/NestedBird-1.0.war /var/www/sound.dev/NestedBird.war -f"
   }
+
+  # exec { "create_server":
+  #   command =>
+  #     "/usr/bin/mvn -f /var/www/sound.dev/source/pom.xml -q clean compile package",
+  #   returns => [0, 1, 2, 14]
+  # }
 }
