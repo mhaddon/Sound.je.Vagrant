@@ -39,11 +39,11 @@ package { "wget":
 } ->
 
 # INSTALL NODE
-package { "nodejs":
-  allow_virtual => false,
-  provider      => yum,
-  ensure        => present
-} ->
+# package { "nodejs":
+#   allow_virtual => false,
+#   provider      => yum,
+#   ensure        => present
+# } ->
 
 # DISABLE FIREWALL
 service { "firewalld":
@@ -56,7 +56,7 @@ class { "setup_project": } ->
 
 class { "mariadb": } ->
 
-class { "prerender": } ->
+# class { "prerender": } ->
 
 class { "nginx": } ->
 
