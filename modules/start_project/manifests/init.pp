@@ -17,10 +17,10 @@ class start_project {
     command =>
       "/usr/bin/cp /var/www/sound.dev/source/target/NestedBird-1.0.war /var/www/sound.dev/NestedBird.war"
   } ->
-  exec { "force_project_permissions":
-    command =>
-      "/usr/bin/chown -R vagrant:vagrant /var/www/sound.dev/*"
-  } ->
+  # exec { "force_project_permissions":
+  #   command =>
+  #     "/usr/bin/chown -R vagrant:vagrant /var/www/sound.dev/*"
+  # } ->
   exec { "wait_a_wee_while":
     command =>
       "/usr/bin/sleep 15"
